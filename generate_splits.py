@@ -31,7 +31,12 @@ df['posts'] = df['posts'].apply(lambda x: re.sub(link_pat, LINK_REP, x))
 df['posts'] = df['posts'].apply(lambda x: x.split('|||'))
 
 
-df['IJ'] = df['type'].apply(lambda x: 'I' if x[0] == 'I' else 'E')
+df['IE'] = df['type'].apply(lambda x: 'I' if x[0] == 'I' else 'E')
 df['NS'] = df['type'].apply(lambda x: 'N' if x[1] == 'N' else 'S')
 df['FT'] = df['type'].apply(lambda x: 'F' if x[2] == 'F' else 'T')
 df['PJ'] = df['type'].apply(lambda x: 'P' if x[3] == 'P' else 'J')
+
+train_ie, dev_ie, test_ie = np.split(df_ie.sample(frac=1), [int(.6*len(df_ie)), int(.8*len(df_ie))])
+train_ns, dev_ns, test_ns = np.split(df_ns.sample(frac=1), [int(.6*len(df_ns)), int(.8*len(df_ns))])
+train_ft, dev_ft, test_ft = np.split(df_ft.sample(frac=1), [int(.6*len(df_ft)), int(.8*len(df_ft))])
+train_pj, dev_pj, test_pj = np.split(df_pj.sample(frac=1), [int(.6*len(df_pj)), int(.8*len(df_pj))])
