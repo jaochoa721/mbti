@@ -36,7 +36,13 @@ df['NS'] = df['type'].apply(lambda x: 'N' if x[1] == 'N' else 'S')
 df['FT'] = df['type'].apply(lambda x: 'F' if x[2] == 'F' else 'T')
 df['PJ'] = df['type'].apply(lambda x: 'P' if x[3] == 'P' else 'J')
 
-train_ie, dev_ie, test_ie = np.split(df_ie.sample(frac=1), [int(.6*len(df_ie)), int(.8*len(df_ie))])
-train_ns, dev_ns, test_ns = np.split(df_ns.sample(frac=1), [int(.6*len(df_ns)), int(.8*len(df_ns))])
-train_ft, dev_ft, test_ft = np.split(df_ft.sample(frac=1), [int(.6*len(df_ft)), int(.8*len(df_ft))])
-train_pj, dev_pj, test_pj = np.split(df_pj.sample(frac=1), [int(.6*len(df_pj)), int(.8*len(df_pj))])
+train_pct = 0.6
+
+# indicates the location to split the data along
+# since dev/test are the same size
+test_split_position = 1.0 - (1.0 - train_pct) / 2
+
+train_ie, dev_ie, test_ie = np.split(df_ie.sample(frac=1), [int(train_pct*len(df_ie)), int(test_split_position*len(df_ie))])
+train_ns, dev_ns, test_ns = np.split(df_ns.sample(frac=1), [int(train_pct*len(df_ns)), int(test_split_position*len(df_ns))])
+train_ft, dev_ft, test_ft = np.split(df_ft.sample(frac=1), [int(train_pct*len(df_ft)), int(test_split_position*len(df_ft))])
+train_pj, dev_pj, test_pj = np.split(df_pj.sample(frac=1), [int(train_pct*len(df_pj)), int(test_split_position*len(df_pj))])
